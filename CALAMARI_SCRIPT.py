@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import numpy as np 
 from datetime import datetime
+from tqdm import tqdm
 
 ########################################################### START OF ARGS, EDIT THIS ###########################################################
 
@@ -66,7 +67,12 @@ def getHourApprox(hour,mins,dev):
     	mins = "0"+mins
     return str(hours)+":"+mins
 
-for date in days_failed:
+# Filling all failed days
+pbar = tqdm(days_failed)
+
+for date in pbar:
+
+	pbar.set_description(date)
 
 	dates=date.split("-")
 	browser.get("https://app-new.calamari.io/clockin/timesheet/create-entry#{%22date%22:%22"+dates[2]+"-"+dates[1]+"-"+dates[0]+"%22,%22employeeId%22:"+str(EMPLOYEE_ID)+"}")
