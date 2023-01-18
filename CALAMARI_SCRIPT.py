@@ -6,6 +6,11 @@ import time
 import numpy as np 
 from datetime import datetime
 from tqdm import tqdm
+from enum import Enum
+
+class Browser(Enum):
+    FIREFOX = 1
+    CHROME = 2
 
 ########################################################### START OF ARGS, EDIT THIS ###########################################################
 
@@ -13,7 +18,7 @@ EMPLOYEE_ID = None # Get your employee id - its at the end of the calamari times
 
 startingHour = 10 # AM hour in which you start working
 workingHours = 8 # Hours you work
-workingMins = 30 # And mins you work
+workingMins = 0 # And mins you work
 
 YEAR = 2022 # Year being edited
 
@@ -22,7 +27,7 @@ FILL_PROJECT = False # Also fills the default project you have worked on |TODO i
 SLEEP_TIME = 5.0 # Seconds waited before each edition, 5 is safe. Don't edit this if you don't know what you're doing
 
 #Put your browser here. For Chrome, that would be webdriver.Chrome() |TODO Chrome doesn't currently work!
-browser = webdriver.Firefox()
+browser = Browser.FIREFOX
 
 ######################################################### END OF ARGS, DONT TOUCH THIS #########################################################
 
@@ -30,6 +35,14 @@ if EMPLOYEE_ID is None:
 	raise RuntimeError("Employee ID needs to be set!")
 
 input("Pressing ENTER will start a puppet browser with Calamari open. Please log in and set your range of timesheet days to \"current year\", then navigate to the year selected in this script YEAR variable, which you can modify as desired. Then come back to this prompt :)")
+print("")
+
+if browser == Browser.FIREFOX:
+	browser = webdriver.Firefox()
+elif browser == Browser.CHROME:
+	browser = webdriver.Chrome()
+else:
+	raise NotImplementedError("Unsupported browser")
 
 browser.get('https://app-new.calamari.io/clockin/timesheet')
 
